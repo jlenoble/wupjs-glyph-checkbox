@@ -1,3 +1,3 @@
-import WupjsGlyphCheckbox from './wupjs-glyph-checkbox';
+import GlyphCheckbox from './glyph-checkbox';
 
-export default WupjsGlyphCheckbox;
+export default GlyphCheckbox;
