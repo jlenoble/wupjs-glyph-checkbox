@@ -1,0 +1,19 @@
+{
+  "generator-wupjs": {
+    "module": "wupjs-glyph-checkbox",
+    "description": "Generic checkbox using React",
+    "author": "Jason Lenoble",
+    "email": "jason.lenoble@gmail.com",
+    "github": "jlenoble",
+    "license": "MIT",
+    "transpile": "es2017",
+    "addons": [
+      "React",
+      "Enzyme"
+    ],
+    "Class": "WupjsGlyphCheckbox",
+    "updated": 2017,
+    "created": 2017,
+    "year": "2017"
+  }
+}
