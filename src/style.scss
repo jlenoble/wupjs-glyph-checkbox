@@ -1,0 +1,14 @@
+@import "./_glyph-checkbox";
+
+@include glyphCheckbox(
+  $parent-selector: ".glyph-checkbox",
+  $button-selector: ".fa-save"
+);
+@include glyphCheckbox(
+  $parent-selector: ".glyph-checkbox",
+  $button-selector: ".fa-check"
+);
+@include glyphCheckbox(
+  $parent-selector: ".glyph-checkbox",
+  $button-selector: ".fa-clock-o"
+);

@@ -134,7 +134,6 @@ describe('Testing <GlyphCheckbox/>', function () {
       <GlyphCheckbox
         glyph="pencil"
         onChange={e => {
-          e.preventDefault();
           checked = refs.inputNode.checked;
         }}
         exposeInputNode={node => {

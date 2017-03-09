@@ -1,3 +1,1 @@
-import GlyphCheckbox from './glyph-checkbox';
-
-export default GlyphCheckbox;
+export {default as GlyphCheckbox} from './glyph-checkbox';
