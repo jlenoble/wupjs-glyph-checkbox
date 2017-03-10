@@ -3,38 +3,35 @@ import {render} from 'react-dom';
 import GlyphCheckbox from './glyph-checkbox';
 import GlyphCheckboxGroup from './glyph-checkbox-group';
 
-let inputNode;
-let inputNode1;
-let inputNode2;
-let inputNode3;
+let inputNodes = new Array(6);
 
 render(<div>
   <h5>3 GlyphCheckboxes</h5>
   <GlyphCheckbox
     glyph="check"
     onChange={e => {
-      console.log(inputNode.checked);
+      console.log(inputNodes[0].checked);
     }}
     exposeInputNode={node => {
-      inputNode = node;
+      inputNodes[0] = node;
     }}
   />
   <GlyphCheckbox
     glyph="clock-o"
     onChange={e => {
-      console.log(inputNode.checked);
+      console.log(inputNodes[1].checked);
     }}
     exposeInputNode={node => {
-      inputNode = node;
+      inputNodes[1] = node;
     }}
   />
   <GlyphCheckbox
     glyph="save"
     onChange={e => {
-      console.log(inputNode.checked);
+      console.log(inputNodes[2].checked);
     }}
     exposeInputNode={node => {
-      inputNode = node;
+      inputNodes[2] = node;
     }}
   />
   Hello world!
@@ -43,24 +40,24 @@ render(<div>
     glyphs={['check', 'clock-o', 'save']}
     onChanges={{
       'check': e => {
-        console.log(inputNode1.checked);
+        console.log(inputNodes[3].checked);
       },
       'clock-o': e => {
-        console.log(inputNode2.checked);
+        console.log(inputNodes[4].checked);
       },
       'save': e => {
-        console.log(inputNode3.checked);
+        console.log(inputNodes[5].checked);
       },
     }}
     exposeInputNodes={{
       'check': node => {
-        inputNode1 = node;
+        inputNodes[3] = node;
       },
       'clock-o': node => {
-        inputNode2 = node;
+        inputNodes[4] = node;
       },
       'save': node => {
-        inputNode3 = node;
+        inputNodes[5] = node;
       },
     }}
   />
