@@ -31,6 +31,7 @@ export const distGlob = srcGlob.concat(['!**/demo.js', '!**/demo.jsx']);
 export const testGlob = join(testDir, ['**/*.test.js', '**/*.test.jsx']);
 export const allTestGlob = join(testDir, ['**/*.js', '**/*.jsx']);
 export const sassGlob = join(sassDir, ['*.scss']);
+export const distSassGlob = sassGlob.concat('!**/demo.scss');
 export const allSassGlob = join(sassDir, ['**/*.scss']);
 
 export const srcBuildGlob = join(buildDir, srcGlob);

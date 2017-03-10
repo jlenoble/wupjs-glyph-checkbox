@@ -2,9 +2,8 @@ import path from 'path';
 import gulp from 'gulp';
 import eslint from 'gulp-eslint';
 import babel from 'gulp-babel';
-import compass from 'gulp-compass';
 
-import {distGlob, distDir, sassDir, sassGlob} from './globs';
+import {distGlob, srcDir, distDir, distSassGlob} from './globs';
 
 export const dist = () => {
   return gulp.src(distGlob)
@@ -15,15 +14,10 @@ export const dist = () => {
 };
 
 export const distSass = () => {
-  return gulp.src(sassGlob, {
-    base: process.cwd(),
+  return gulp.src(distSassGlob, {
+    base: path.join(process.cwd(), srcDir),
     since: gulp.lastRun(distSass),
   })
-  .pipe(compass({
-    project: path.join(__dirname, '..'),
-    css: distDir,
-    sass: sassDir,
-  }))
   .pipe(gulp.dest(distDir));
 };
 
