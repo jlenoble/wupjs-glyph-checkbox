@@ -4,23 +4,21 @@ import {expect} from 'chai';
 import GlyphCheckboxGroup from '../src/glyph-checkbox-group';
 
 describe('Testing <GlyphCheckboxGroup/>', function () {
-  it(`<GlyphCheckboxGroup/> can't be instantiated w/o props glyphs/onChanges` +
-    `/exposeInputNodes`,
+  it(`<GlyphCheckboxGroup/> can't be instantiated w/o props glyphs/onChanges`,
   function () {
     expect(shallow.bind(undefined, <GlyphCheckboxGroup/>)).to.throw(
       'undefined is not an object');
   });
 
-  it(`<GlyphCheckboxGroup/> can be instantiated with props glyphs/onChanges` +
-    `/exposeInputNodes`,
+  it(`<GlyphCheckboxGroup/> can be instantiated with props glyphs/onChanges`,
   function () {
     shallow(
       <GlyphCheckboxGroup
         glyphs={['pencil']}
-        onChanges={{
+        onChecks={{
           pencil: () => {},
         }}
-        exposeInputNodes={{
+        onUnchecks={{
           pencil: () => {},
         }}
       />
@@ -31,11 +29,11 @@ describe('Testing <GlyphCheckboxGroup/>', function () {
     const wrapper = render(
       <GlyphCheckboxGroup
         glyphs={['pencil', 'save']}
-        onChanges={{
+        onChecks={{
           pencil: () => {},
           save: () => {},
         }}
-        exposeInputNodes={{
+        onUnchecks={{
           pencil: () => {},
           save: () => {},
         }}
@@ -55,11 +53,11 @@ describe('Testing <GlyphCheckboxGroup/>', function () {
     const wrapper = shallow(
       <GlyphCheckboxGroup
         glyphs={['pencil', 'save']}
-        onChanges={{
+        onChecks={{
           pencil: () => {},
           save: () => {},
         }}
-        exposeInputNodes={{
+        onUnchecks={{
           pencil: () => {},
           save: () => {},
         }}
@@ -91,11 +89,11 @@ describe('Testing <GlyphCheckboxGroup/>', function () {
     const wrapper = shallow(
       <GlyphCheckboxGroup
         glyphs={['pencil', 'save']}
-        onChanges={{
+        onChecks={{
           pencil: () => {},
           save: () => {},
         }}
-        exposeInputNodes={{
+        onUnchecks={{
           pencil: () => {},
           save: () => {},
         }}
@@ -142,30 +140,28 @@ describe('Testing <GlyphCheckboxGroup/>', function () {
   });
 
   it(`<GlyphCheckboxGroup/>'s inputs can be checked`, function () {
-    const refs = {};
     let nClicks = 0;
+    const e = {
+      target: {},
+    };
 
     const wrapper = mount(
       <GlyphCheckboxGroup
         glyphs={['pencil', 'save']}
-        onChanges={{
+        onChecks={{
           pencil: () => {
-            if (refs.pencilNode.checked) {
-              nClicks++;
-            }
+            nClicks++;
           },
           save: () => {
-            if (refs.saveNode.checked) {
-              nClicks++;
-            }
+            nClicks--;
           },
         }}
-        exposeInputNodes={{
-          pencil: node => {
-            refs.pencilNode = node;
+        onUnchecks={{
+          pencil: () => {
+            nClicks += 10;
           },
-          save: node => {
-            refs.saveNode = node;
+          save: () => {
+            nClicks -= 10;
           },
         }}
         checkAddClasses={{
@@ -178,17 +174,23 @@ describe('Testing <GlyphCheckboxGroup/>', function () {
     const pencilButton = wrapper.find('.btn-pencil input');
     const saveButton = wrapper.find('.btn-save input');
 
+    pencilButton.simulate('change', e);
+    saveButton.simulate('change', e);
     expect(nClicks).to.equal(0);
-    refs.pencilNode.checked = true;
-    pencilButton.simulate('change');
+
+    e.target.checked = true;
+    pencilButton.simulate('change', e);
     expect(nClicks).to.equal(1);
-    refs.pencilNode.checked = false;
-    pencilButton.simulate('change');
-    expect(nClicks).to.equal(1);
-    refs.saveNode.checked = true;
-    saveButton.simulate('change');
-    expect(nClicks).to.equal(2);
-    saveButton.simulate('change');
-    expect(nClicks).to.equal(3);
+
+    e.target.checked = false;
+    pencilButton.simulate('change', e);
+    expect(nClicks).to.equal(11);
+
+    e.target.checked = true;
+    saveButton.simulate('change', e);
+    expect(nClicks).to.equal(10);
+
+    saveButton.simulate('change', e);
+    expect(nClicks).to.equal(9);
   });
 });

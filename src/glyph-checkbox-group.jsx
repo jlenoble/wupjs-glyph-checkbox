@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import GlyphCheckbox from './glyph-checkbox';
 
 const GlyphCheckboxGroup = ({
-  glyphs, exposeInputNodes, onChanges, defaultChecked,
+  glyphs, onChecks, onUnchecks, checked,
   checkGroupBaseClass, checkGroupAddClass,
   checkBaseClasses, checkAddClasses,
   glyphBaseClasses, glyphAddClasses,
@@ -17,8 +17,9 @@ const GlyphCheckboxGroup = ({
         <GlyphCheckbox
           key={glyph}
           glyph={glyph}
-          onChange={onChanges[glyph]}
-          exposeInputNode={exposeInputNodes[glyph]}
+          onCheck={onChecks[glyph]}
+          onUncheck={onUnchecks[glyph]}
+          checked={checked[glyph]}
           checkBaseClass={checkBaseClasses[glyph]}
           checkAddClass={checkAddClasses[glyph]}
           glyphBaseClass={glyphBaseClasses[glyph]}
@@ -31,8 +32,9 @@ const GlyphCheckboxGroup = ({
 
 GlyphCheckboxGroup.propTypes = {
   glyphs: PropTypes.array.isRequired,
-  exposeInputNodes: PropTypes.object.isRequired,
-  onChanges: PropTypes.object.isRequired,
+  onChecks: PropTypes.object,
+  onUnchecks: PropTypes.object,
+  checked: PropTypes.object,
   checkGroupBaseClass: PropTypes.string,
   checkGroupAddClass: PropTypes.string,
   checkBaseClasses: PropTypes.object,
@@ -43,6 +45,9 @@ GlyphCheckboxGroup.propTypes = {
 
 GlyphCheckboxGroup.defaultProps = {
   checkGroupBaseClass: 'btn-group',
+  onChecks: {},
+  onUnchecks: {},
+  checked: {},
   checkBaseClasses: {},
   checkAddClasses: {},
   glyphBaseClasses: {},

@@ -4,11 +4,18 @@ import classnames from 'classnames';
 let _uid = 0;
 const getUid = () => 'glyph-checkbox' + (_uid++);
 
-const GlyphCheckbox = ({glyph, exposeInputNode, onChange, defaultChecked,
+const GlyphCheckbox = ({glyph, onCheck, onUncheck, checked,
   checkBaseClass, checkAddClass, glyphBaseClass, glyphAddClass}) => {
   const uid = getUid();
   const _glyphBaseClass = (glyphBaseClass && (glyphBaseClass + '-' + glyph)) ||
     `fa fa-${glyph}`;
+  const onChange = onCheck || onUncheck ? e => {
+    if (e.target.checked) {
+      onCheck && onCheck(e);
+    } else {
+      onUncheck && onUncheck(e);
+    }
+  } : undefined;
 
   return (
     <span className={classnames(checkBaseClass, checkAddClass)}>
@@ -17,10 +24,7 @@ const GlyphCheckbox = ({glyph, exposeInputNode, onChange, defaultChecked,
         name={uid}
         type="checkbox"
         onChange={onChange}
-        defaultChecked={defaultChecked}
-        ref={node => {
-          exposeInputNode(node);
-        }}
+        checked={checked}
       />
       <label
         htmlFor={uid}
@@ -32,9 +36,9 @@ const GlyphCheckbox = ({glyph, exposeInputNode, onChange, defaultChecked,
 
 GlyphCheckbox.propTypes = {
   glyph: PropTypes.string.isRequired,
-  exposeInputNode: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  defaultChecked: PropTypes.bool,
+  onCheck: PropTypes.func,
+  onUncheck: PropTypes.func,
+  checked: PropTypes.bool,
   checkBaseClass: PropTypes.string,
   checkAddClass: PropTypes.string,
   glyphBaseClass: PropTypes.string,

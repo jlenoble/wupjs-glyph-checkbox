@@ -15,7 +15,6 @@ describe('Testing <GlyphCheckbox/>', function () {
       <GlyphCheckbox
         glyph="pencil"
         onChange={() => {}}
-        exposeInputNode={node => {}}
       />
     );
   });
@@ -25,7 +24,6 @@ describe('Testing <GlyphCheckbox/>', function () {
       <GlyphCheckbox
         glyph="pencil"
         onChange={() => {}}
-        exposeInputNode={node => {}}
       />
     );
 
@@ -40,7 +38,6 @@ describe('Testing <GlyphCheckbox/>', function () {
       <GlyphCheckbox
         glyph="pencil"
         onChange={() => {}}
-        exposeInputNode={node => {}}
       />
     );
 
@@ -56,7 +53,6 @@ describe('Testing <GlyphCheckbox/>', function () {
       <GlyphCheckbox
         glyph="pencil"
         onChange={() => {}}
-        exposeInputNode={node => {}}
         checkAddClass="check-added"
         glyphAddClass="glyph-added"
       />
@@ -81,7 +77,6 @@ describe('Testing <GlyphCheckbox/>', function () {
       <GlyphCheckbox
         glyph="pencil"
         onChange={() => {}}
-        exposeInputNode={node => {}}
         checkBaseClass="check-replaced"
         glyphBaseClass="glyph-replaced"
         checkAddClass="check-added"
@@ -107,49 +102,64 @@ describe('Testing <GlyphCheckbox/>', function () {
 
   it(`<GlyphCheckbox/> can fire a change event`, function () {
     let nClicks = 0;
+    const e = {
+      target: {},
+    };
+
     const wrapper = shallow(
       <GlyphCheckbox
         glyph="pencil"
-        onChange={() => {
+        onCheck={() => {
           nClicks++;
         }}
-        exposeInputNode={node => {}}
+        onUncheck={() => {
+          nClicks--;
+        }}
       />
     );
 
     const input = wrapper.find('input');
 
     expect(nClicks).to.equal(0);
-    input.simulate('change');
+    input.simulate('change', e);
+    expect(nClicks).to.equal(-1);
+
+    e.target.checked = true;
+    input.simulate('change', e);
+    expect(nClicks).to.equal(0);
+    input.simulate('change', e);
     expect(nClicks).to.equal(1);
-    input.simulate('change');
-    expect(nClicks).to.equal(2);
+
+    e.target.checked = false;
+    input.simulate('change', e);
+    expect(nClicks).to.equal(0);
+    input.simulate('change', e);
+    expect(nClicks).to.equal(-1);
   });
 
   it(`<GlyphCheckbox/> can be changed and state recovered`, function () {
-    const refs = {};
     let checked = false;
+    const e = {
+      target: {},
+    };
 
     const wrapper = mount(
       <GlyphCheckbox
         glyph="pencil"
-        onChange={e => {
-          checked = refs.inputNode.checked;
-        }}
-        exposeInputNode={node => {
-          refs.inputNode = node;
+        onCheck={e => {
+          checked = e.target.checked ? true : false;
         }}
       />
     );
 
     const input = wrapper.find('input');
 
-    input.simulate('change');
+    input.simulate('change', e);
     expect(checked).to.be.false;
 
-    refs.inputNode.checked = true;
+    e.target.checked = true;
     expect(checked).to.be.false;
-    input.simulate('change');
+    input.simulate('change', e);
     expect(checked).to.be.true;
   });
 
