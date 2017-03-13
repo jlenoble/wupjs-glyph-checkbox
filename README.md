@@ -4,12 +4,15 @@ Generic checkbox using React
 ## Content
 
 * [Usage](#usage)
-* [Required properties](#required-properties)
+* [Properties](#properties)
   * [glyph](#glyph)
-  * [onChange](#onchange)
-  * [exposeInputNode](#exposeinputnode)
-* [Theming GlyphCheckbox](#theming-glyphcheckbox)
-* [Overriding GlyphCheckbox defaults](#overriding-glyphcheckbox-defaults)
+  * [onCheck](#oncheck),
+  * [onUncheck](#onuncheck),
+  * [checked](#checked),
+  * [checkBaseClass](#checkbaseclass),
+  * [checkAddClass](#checkaddclass),
+  * [glyphBaseClass](#glyphbaseclass),
+  * [glyphAddClass](#glyphaddclass),
 * [GlyphCheckboxGroup](#glyphcheckboxgroup)
 
 ## Usage
@@ -27,37 +30,39 @@ render(<div>
   <h5>GlyphCheckbox</h5>
   <GlyphCheckbox
     glyph="check"
-    onChange={e => {
-      console.log(inputNode.checked);
+    onCheck={e => {
+      console.log(e.target.checked);
     }}
-    exposeInputNode={node => {
-      inputNode = node;
+    onUncheck={e => {
+      console.log(e.target.checked);
     }}
   />
 </div>, document.getElementById('app'));
 ```
 
-## Required properties
+## Properties
 
 ### `glyph`
 
-By default, `glyph` is the name of a character as defined by [Font Awesome](http://fontawesome.io/icons/). You could use it in combination with property `glyphBaseClass` to use a totally different character set. See [Overriding GlyphCheckbox defaults](#overriding-glyphcheckbox-defaults).
+By default, `glyph` is the name of a character as defined by [Font Awesome](http://fontawesome.io/icons/). You could use it in combination with property `glyphBaseClass` to use a totally different character set. See [glyphBaseClass](#glyphbaseclass).
 
-### `onChange`
+### `onCheck`
 
-`onChange` property must be a function which will be called whenever the checkbox is changed. As the component is purely representational, the function knows nothing of its state or props. To access the input check state, you must first expose the input node using the third required prop:
+`onCheck` property must be a function which will be called whenever the checkbox is checked. It takes as sole argument the event `e` originally passed to the `onChange` property on the underlying `input[type="checkbox"]` node. Therefore you can access the firing node as `e.target` and change the checked value through `e.target.checked`.
 
-### `exposeInputNode`
+### `onUncheck`
 
-`exposeInputNode` is a callback that sets a reference to the input node, allowing the calling parent to work with its child data. See [Usage](#usage) for an example.
+`onUncheck` property must be a function which will be called whenever the checkbox is unchecked. It takes as sole argument the event `e` originally passed to the `onChange` property on the underlying `input[type="checkbox"]` node. Therefore you can access the firing node as `e.target` and change the checked value through `e.target.checked`.
 
-## Theming GlyphCheckbox
+### `checked`
 
-There are two props provided to help theme the component: `checkAddClass` and `glyphAddClass`. The first one helps with the placement, sizing, etc. The second one helps theme the symbol within the label. But they come on top of the Bootstrap and Font Awesome defaults. See below to override them.
+`checked` property is the boolean that controls the state of the checkbox, checked (`true`) or unchecked (`false`);
 
-## Overriding GlyphCheckbox defaults
+### `checkBaseClass`
 
-To override Bootstrap classes, use property `checkBaseClass`.
+To override Bootstrap classes, use property `checkBaseClass`. It will replace the default `btn btn-secondary` classes by whatever you need.
+
+### `glyphBaseClass`
 
 To change the fonts, you have to use `glyphBaseClass`. By default, the classes used to theme them are formed by concatenating the string `"fa fa-"` with the value of the `glyph` prop. This works well with the CSS of Font Awesome. Now you can use your own CSS and own naming scheme.
 
@@ -79,20 +84,28 @@ render(<div>
   <h5>Themed GlyphCheckboxes</h5>
   <GlyphCheckbox
     glyph="question-mark"
-    onChange={() => {
-      console.log('change ?');
+    onCheck={() => {
+      console.log('check ?');
     }}
     glyphBaseClass='my'
   />
   <GlyphCheckbox
     glyph="ellipsis"
-    onChange={() => {
-      console.log('click ...');
+    onCheck={() => {
+      console.log('check ...');
     }}
     glyphBaseClass='my'
   />
 </div>, document.getElementById('app'));
 ```
+
+### `checkAddClass`
+
+`checkAddClass` property helps theme the outter wrapper of the component, therefore allowing to alter its overall characteristics such as placement, sizing...
+
+### `glyphAddClass`
+
+`glyphAddClass` property helps theme the symbol within the label, e.g. altering its color, backgroung or size.
 
 ## GlyphCheckboxGroup
 
@@ -103,39 +116,37 @@ import React from 'react';
 import {render} from 'react-dom';
 import {GlyphCheckboxGroup} from 'wupjs-glyph-checkbox';
 
-let inputNode1, inputNode2, inputNode3;
-
 render(<div>
   <h5>GlyphCheckboxGroup</h5>
   <GlyphCheckboxGroup
     glyphs={['check', 'clock-o', 'save']}
-    onChanges={{
+    onChecks={{
       'check': e => {
-        console.log(inputNode1.checked);
+        console.log(e.target.checked);
       },
       'clock-o': e => {
-        console.log(inputNode2.checked);
+        console.log(e.target.checked);
       },
       'save': e => {
-        console.log(inputNode3.checked);
+        console.log(e.target.checked);
       },
     }}
-    exposeInputNodes={{
-      'check': node => {
-        inputNode1 = node;
+    onUnchecks={{
+      'check': e => {
+        console.log(e.target.checked);
       },
-      'clock-o': node => {
-        inputNode2 = node;
+      'clock-o': e => {
+        console.log(e.target.checked);
       },
-      'save': node => {
-        inputNode3 = node;
+      'save': e => {
+        console.log(e.target.checked);
       },
     }}
   />
 </div>, document.getElementById('app'));
 ```
 
-GlyphCheckboxGroup has the same properties as GlyphCheckbox, but with the plural mark (`s` appended, yielding `glyphs`, `onChanges`, `exposeInputNodes`, `checkBaseClasses`, `checkAddClasses`, `glyphBaseClasses`, `glyphAddClasses`).
+GlyphCheckboxGroup has the same properties as GlyphCheckbox, but with the plural mark (`s` appended, yielding `glyphs`, `onChecks`, `onUnchecks`, `checkBaseClasses`, `checkAddClasses`, `glyphBaseClasses`, `glyphAddClasses`), except for the `checked` property which takes no `s` (it looked too wierd!).
 
 `glyphs` is an array of strings, th others are objects mapping to the strings in `glyphs`.
 
