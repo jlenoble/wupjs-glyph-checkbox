@@ -1,16 +1,12 @@
 import gulp from 'gulp';
-import mocha from 'gulp-mocha-phantomjs';
+import mocha from 'gulp-mocha';
 
 import './build';
-import './bundle';
 import './sass';
 
-export const test = done => {
-  return gulp.src('test/runner.html')
-    .pipe(mocha())
-    .on('end', () => {
-      done();
-    });
+export const test = () => {
+  return gulp.src('build/test/index.test.js')
+    .pipe(mocha());
 };
 
-gulp.task('test', gulp.series(gulp.parallel('bundle', 'sass'), test));
+gulp.task('test', gulp.series('sass', test));

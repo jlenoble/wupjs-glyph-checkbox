@@ -1,9 +1,20 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import {expect} from 'chai';
+import dom from 'jsdom-global';
 import GlyphCheckbox from '../src/glyph-checkbox';
 
 describe('Testing <GlyphCheckbox/>', function () {
+  this.timeout(5000); // eslint-disable-line no-invalid-this
+
+  beforeEach(function () {
+    this.cleanup = dom(); // eslint-disable-line no-invalid-this
+  });
+
+  afterEach(function () {
+    this.cleanup(); // eslint-disable-line no-invalid-this
+  });
+
   it(`<GlyphCheckbox/> can be instantiated with no props`, function () {
     shallow(
       <GlyphCheckbox/>
